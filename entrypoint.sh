@@ -28,14 +28,13 @@ if [ ! -d "$CATALINA_HOME/webapps/jasperserver" ]; then
     ./js-ant deploy-webapp-ce
     
     # Add WebServiceDataSource plugin
-    wget https://d2553lapexsdrl.cloudfront.net/sites/default/files/releases/jaspersoft_webserviceds_v1.5.zip -O /tmp/jasper.zip && \
-    unzip /tmp/jasper.zip -d /tmp/ && \
-    cp -rfv /tmp/JRS/WEB-INF/* /usr/local/tomcat/webapps/ROOT/WEB-INF/ && \
-    sed -i 's/queryLanguagesPro/queryLanguagesCe/g' /usr/local/tomcat/webapps/ROOT/WEB-INF/applicationContext-WebServiceDataSource.xml && \
-    rm -rf /tmp/*
+    cp -rfv /tmp/jasperreports-htmlcomponent-5.0.1.jar $CATALINA_HOME/webapps/ROOT/WEB-INF/lib && \
+    cp -rfv /tmp/JRS/WEB-INF/* $CATALINA_HOME/webapps/ROOT/WEB-INF/ && \
+    sed -i 's/queryLanguagesPro/queryLanguagesCe/g' $CATALINA_HOME/webapps/ROOT/WEB-INF/applicationContext-WebServiceDataSource.xml && \
+    cp -rf /validation.properties $CATALINA_HOME/webapps/ROOT/WEB-INF/classes/esapi/validation.properties && \
+    sed -i 's/security.validation.sql.on=true/security.validation.sql.on=false/g' $CATALINA_HOME/webapps/ROOT/WEB-INF/classes/esapi/security-config.properties
 
     # import any export zip files from another JasperServer
-
     shopt -s nullglob # handle case if no zip files found
 
     IMPORT_FILES=/jasperserver-import/*.zip
